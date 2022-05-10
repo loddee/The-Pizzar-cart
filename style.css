@@ -1,0 +1,51 @@
+body {
+    background-color: rgb(124, 124, 169);
+}
+
+.Pizzas {
+    display: flex;
+}
+
+h1 {
+    text-align: center;
+    background-color: azure;
+    font-family: 'Sacramento', cursive;
+    font-weight: bolder;
+    color: #66BFBF;
+}
+
+.Medium-pizza {
+    border: solid #66BFBF 1em;
+    background-color: #37786c;
+    margin: 1em;
+    text-align: center;
+}
+
+.Large-pizza {
+    border: solid #66BFBF 1em;
+    background-color: #3f887b;
+    margin: 1em;
+    text-align: center;
+}
+
+.Small-pizza {
+    border: solid#66BFBF 1em;
+    background-color: #3e897b;
+    margin: 1em;
+    text-align: center;
+}
+
+@media (max-width: 700px) {
+    body {
+        background-color: #408b7d;
+        ;
+    }
+    .Pizzas {
+        display: inline-block;
+    }
+}
+
+.bottom-container {
+    background-color: #66BFBF;
+    text-align: center;
+}
