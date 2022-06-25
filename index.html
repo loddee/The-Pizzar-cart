@@ -6,51 +6,243 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon/faviconLM.ico">
+    <script src="https://unpkg.com/alpinejs" defer></script>
+
     <title>Perfact Pizz</title>
 </head>
 
 <body>
-    <h1>Perfact pizza</h1>
-    <h2>Menu</h2>
-    <div class=" contaner">
-        <div class="Pizzas">
-            <div class="Medium-pizza">
-                <img src="img/pizza1.png" alt="first pizza image">
-                <h2>Medium pizza</h2>
-                <h3>R78.99</h3>
-                medium margeritha pizza with3 toppings max. 3 or less other toppings
+
+    <div class="container" x-data="{showCart:true, 
+        MediumTotal:0.00,
+        MediumQty:0.00,
+        LargeTotal:0.00,
+        LargeQty:0.00, 
+        SmallTotal:0.00,
+        SmallQty:0.00,
+        PaymentAmount:0,
+        paymentMessage:'',
+        PayNow:false,
+        cartTotal(){
+        return this.MediumTotal + this.LargeTotal + this.SmallTotal
+    }, 
+    TotalQty(){
+        return this.MediumQty + this.LargeQty + this.SmallQty
+    
+    }, 
+    MakePayment(){
+        
+        if(!this.PaymentAmount){
+            this.paymentMessage = 'No Amount Enterd!'
+
+        }
+        
+        if(this.PaymentAmount >= this.cartTotal()){
+            this.paymentMessage = 'Payment Approved!'
+            this.payNow = false;
+            setTimeout(() =>{
+                this.clearCart()
+            },2000)
+            
+        }else{
+            this.paymentMessage = 'Payment Declined!'
+        }
+    },
+    byMedium(){
+        this.MediumTotal +=75.99
+        this.MediumQty +=1
+    },
+    clearCart(){
+       this.MediumTotal=0.00;
+       this.MediumQty=0.00;
+       this.LargeTotal=0.00;
+       this.LargeQty=0.00; 
+       this.SmallTotal=0.00;
+       this.SmallQty=0.00;
+        
+    },
+
+     reduceMedium(){
+        if(this.MediumQty >0){
+            this.MediumTotal -=75.99
+            this.MediumQty -=1
+        }  
+    },
+    byLarge(){
+        this.LargeTotal +=75.99
+        this.LargeQty +=1
+    },
+     reduceLarge(){
+        if(this.LargeQty >0){
+            this.LargeTotal -=75.99
+            this.LargeQty -=1
+        }  
+    },
+    bySmall(){
+        this.SmallTotal +=75.99
+        this.SmallQty +=1
+    },
+     reduceSmall(){
+        if(this.SmallQty >0){
+            this.SmallTotal -=75.99
+            this.SmallQty -=1
+        }  
+    }}">
+        <div class="header">
+
+            <div class="f3">
+                <h1>The Pizzar Pizza</h1>
+
+                <img src="img/pizza1.png" alt="" width="40">
+                <img src="img/pizza2.png" alt="" width="40">
+                <img src="img/pizza3.png" alt="" width="40">
+
+                <small>Inspired by <a href="http://www.pizzaipsum.com/">pizzaipsum</a>  </small>
             </div>
 
-            <div class="Large-pizza">
-                <img src="img/pizza3.png" alt="second image">
-                <h2>Large pizza</h2>
-                <h3>R78</h3>
-                large margeritha pizza with3 toppings max. 3 or less other toppings
-            </div>
+            <div class="f1">
 
-            <div class="Small-pizza">
-                <img src="img/pizza4.png" alt="image no3">
-                <h2>Small pizza</h2>
-                <h3>R78</h3>
-                small Pizza with 3 toppings 1.meat topping. 2. 3 or less other toppings.
+                <button x-on:click="showCart=true">
+                        <img src="./images/shopping-cart.png" width="30" alt="">show Cart
+                    </button>
+                <strong x-show="TotalQty()>0"><span x-text="TotalQty()"></span> Orders.</strong>
+
 
             </div>
         </div>
 
+        <div class="cart-box" x-show="showCart">
+            <div class="cart">
+                <div>
+                    <button x-on:click="showCart= false">
+                        <img src="./images/shopping-cart.png" width="30" alt="">Close Cart
+                    </button>
+                </div>
+                <div class="">
+                    <h2>Cart
+                        <img src="./images/shopping-cart.png" width="30" alt="">
+                    </h2>
+                </div>
+
+                <table>
+                    <tr>
+                        <td>Medium-pizza</td>
+                        <td>
+                            <span x-text="MediumQty"></span>
+                            <button x-on:click="byMedium" x-show="MediumQty >0">+</button>
+                            <button x-on:click="reduceMedium" x-show="MediumQty > 0">-</button>
+                        </td>
+                        <td>
+                            R<span x-text="MediumTotal.toFixed(2)"></span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Large-pizza</td>
+                        <td>
+                            <span x-text="LargeQty"></span>
+                            <button x-on:click="byLarge" x-show="LargeQty >0">+</button>
+                            <button x-on:click="reduceLarge" x-show="LargeQty > 0">-</button>
+                        </td>
+                        <td>
+                            R<span x-text="LargeTotal.toFixed(2)">
+                                </span>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Small-pizza</td>
+                        <td>
+                            <span x-text="SmallQty"></span>
+                            <button x-on:click="bySmall" x-show="SmallQty >0">+</button>
+                            <button x-on:click="reduceSmall" x-show="SmallQty > 0">-</button>
+                        </td>
+                        <td>
+                            R<span x-text="SmallTotal.toFixed(2)"></span>
+                        </td>
 
 
+                    </tr>
+                    <tr>
+                        <td colspan="2">Total</td>
+                        <td>
+                            R<span x-text="cartTotal().toFixed(2)"></span>
+                        </td>
 
-    </div>
-    <div class="bottom-container">
-        <div class="footer">
-            <a class="footer-link" href="https://www.linkedin.com/">LinkedIn</a>
-            <a class="footer-link" href="https://twitter.com/">Twitter</a>
-            <a class="footer-link" href="http://smart-piggy.netlify.app/">Website</a>
-            <a class="footer-link" href="http://loddee22@gmail.com/">Email</a>
-            <p>© 2022 Loddy Mkhari.</p>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div x-show="PayNow">
+                                <div class="message" x-text="paymentMessage">Message...</div>
+                            </div>
+
+                            <div>
+                                <label for="">Payment amount</label>
+                                <input class="input" type="number" placeholder="Payment amount" x-model="PaymentAmount">
+                                <button x-on:click="MakePayment" class="btn"><img src="./images/shopping-cart.png" width="20" alt="">PayNow</button>
+
+                            </div>
+
+
+                        </td>
+                        <td>
+
+                            <button x-show="!PayNow" x-on:click="PayNow=true" class="btn"><img src="./images/shopping-cart.png" width="20" alt="">
+                        Pay</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
+        <h2>Menu</h2>
+        <div class=" contaner">
+            <div class="Pizzas">
+                <div class="Medium-pizza">
+                    <img src="img/pizza1.png" alt="first pizza image">
+                    <h2>Medium pizza</h2>
+                    <h3>R75.99</h3>
+                    <button class="buy btn" x-on:click="MediumTotal +=75.99 ; MediumQty +=1">
+					<img src="img/pizza1.png" alt="" width="20" >
+				Buy</button> medium margeritha pizza with3 toppings max. 3 or less other toppings
+                </div>
+
+                <div class="Large-pizza">
+                    <img src="img/pizza3.png" alt="second image">
+                    <h2>Large pizza</h2>
+                    <h3>R90</h3>
+                    <button class="buy btn" x-on:click="LargeTotal +=90 ; LargeQty +=1">
+					<img src="img/pizza2.png" alt="" width="20" >
+				Buy</button> large margeritha pizza with3 toppings max. 3 or less other toppings
+                </div>
+
+                <div class="Small-pizza">
+                    <img src="img/pizza4.png" alt="image no3">
+                    <h2>Small pizza</h2>
+                    <h3>R60</h3>
+                    <button class="buy btn" x-on:click="SmallTotal +=60 ;SmallQty +=1">
+					<img src="img/pizza3.png" alt="" width="20" >
+				Buy</button> small Pizza with 3 toppings 1.meat topping. 2. 3 or less other toppings.
+
+                </div>
+            </div>
 
 
+
+
+        </div>
+        <div class="bottom-container">
+            <div class="footer">
+                <a class="footer-link" href="https://www.linkedin.com/">LinkedIn</a>
+                <a class="footer-link" href="https://twitter.com/">Twitter</a>
+                <a class="footer-link" href="http://smart-piggy.netlify.app/">Website</a>
+                <a class="footer-link" href="http://loddee22@gmail.com/">Email</a>
+                <p>© 2022 Loddy Mkhari.</p>
+            </div>
+
+
+        </div>
     </div>
 </body>
 
